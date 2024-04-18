@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 import datetime
-
 #########################  UserProfile  ################################
 
 class UserProfile(models.Model):
@@ -13,31 +12,21 @@ class UserProfile(models.Model):
     facebook_profile = models.URLField(null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
 
-
-#########################  Tag  ################################
-
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
-
-
 #######################   Category  ################################
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-
 
 ##########################   Project #######################################################
 class Project(models.Model):
     title = models.CharField(max_length=255)
     details = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    pictures = models.ImageField(upload_to='project_pictures/%Y/%m/%d')
     total_target = models.DecimalField(max_digits=10, decimal_places=2)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     is_cancelled = models.BooleanField(default=False)
-    tags = models.ManyToManyField(Tag)
     country = models.CharField(max_length=100, null=True, blank=True) 
 
     def total_donations(self):
@@ -45,6 +34,15 @@ class Project(models.Model):
 
     def total_ratings(self):
         return self.rating_set.aggregate(models.Sum('rating'))['rating__sum'] or 0
+    
+  
+    def pictures(self):
+       
+        picture = self.projectpicture_set.first()
+        if picture:
+            return picture.image.url
+        else:
+            return None   
 
     def remaining_time(self):
         now = timezone.now()
@@ -60,7 +58,7 @@ class Project(models.Model):
     def top_rated_projects():
         top_projects = Project.objects.annotate(total_rating=models.Sum('rating__rating')).order_by('-total_rating')
         return top_projects
-
+    
 
     @property
     def progress_percentage(self):
@@ -68,6 +66,12 @@ class Project(models.Model):
             return (self.total_donations() / self.total_target) * 100
         else:
             return 0 
+        
+#########################  Tag  ################################
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+    projects = models.ManyToManyField(Project, related_name='tags')
 
 ############################  Donation  ####################################################
 
@@ -85,7 +89,6 @@ class Comment(models.Model):
     text = models.TextField()
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
 
 #################################   Reply   #################################################
 
@@ -118,3 +121,22 @@ class Report(models.Model):
     reason = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+########################## Project Picture ####################################
+
+class ProjectPicture(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='project_pictures/%Y/%m/%d')
+
+
+########################### featured projects#####################################
+
+
+
+class FeaturedProject(models.Model):
+    project = models.OneToOneField(Project, on_delete=models.CASCADE, related_name='featured_project')
+    is_featured = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    @staticmethod
+    def newest_featured_projects():
+        return FeaturedProject.objects.filter(is_featured=True).order_by('-created_at')[:5]

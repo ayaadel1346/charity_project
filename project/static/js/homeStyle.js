@@ -1,4 +1,4 @@
-//caresolpage
+
 
 document.addEventListener('DOMContentLoaded', function() {
     var myCarousel = document.querySelector('#carouselExampleCaptions');
@@ -110,7 +110,24 @@ function animateProgressBar(loader, progress) {
 
 
 
+document.addEventListener('DOMContentLoaded', function () {
+    var dateInputs = document.querySelectorAll('input[type="date"]');
+    dateInputs.forEach(function (input) {
+        input.classList.add('form-control');
+    });
 
+    
+    var addImageBtn = document.getElementById('add-image');
+    var imageInputsContainer = document.getElementById('image-inputs');
+    var imageInputTemplate = document.getElementById('id_images').outerHTML;
+
+    addImageBtn.addEventListener('click', function () {
+        var newImageInput = document.createElement('div');
+        newImageInput.classList.add('mb-3');
+        newImageInput.innerHTML = imageInputTemplate;
+        imageInputsContainer.appendChild(newImageInput);
+    });
+});
 
 
 

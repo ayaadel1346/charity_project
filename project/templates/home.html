@@ -9,7 +9,7 @@
 
 {% block content %}
 <!--caresol container-->
-<div class="home_page container-fluid">
+<div id="home" class="home_page container-fluid my-5">
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
         <div class="darkbg"></div>
         <div class="carousel-indicators">
@@ -24,6 +24,13 @@
                     <h5 class="slideHeader col-md-0 col-12 text-light">Empowering Change </h5>
                     <p class="slideParagraph col-md-0 col-12 ">Every donation you make is a powerful statement </p>
                     <p class="slideCaption col-md-0 col-12 ">Join us in our mission to create a better world for all.</p>
+                    <div>
+                        <a href="{% url 'project:create_project' %}" class="carousel-button btn btn-lg position-absolute bottom-0 start-0 mb-4 ms-5 d-none d-sm-inline">Create Project</a>
+                        <a href="{% url 'project:create_project' %}" class="carousel-button btn btn-sm position-absolute top-0 end-0 mt-2  d-sm-none">Create Project</a>
+                
+                    </div>
+                    
+
                 </div>
             </div>
             <div class="carousel-item">
@@ -32,6 +39,11 @@
                     <h5 class="slideHeader col-md-0 col-12 text-light">Discover a world </h5>
                     <p class="slideParagraph col-md-0 col-12 ">Have the power to make a difference in the lives </p>
                     <p class="slideCaption col-md-0 col-12 ">Join us in making a meaningful difference in the lives </p>
+                    <div>
+                        <a href="{% url 'project:create_project' %}" class="carousel-button btn btn-lg position-absolute bottom-0 start-0 mb-4 ms-5 d-none d-sm-inline">Create Project</a>
+                        <a href="{% url 'project:create_project' %}" class="carousel-button btn btn-sm position-absolute top-0 end-0 mt-2  d-sm-none">Create Project</a>
+                
+                    </div>
                 </div>
             </div>
             <div class="carousel-item">
@@ -40,6 +52,11 @@
                     <h5 class="slideHeader col-md-0 col-12 text-light">Your Giving Matters</h5>
                     <p class="slideParagraph col-md-0 col-12 ">With just a few taps, you can create lasting change</p>
                     <p class="slideCaption col-md-0 col-12 ">Join us in spreading kindness and compassion in the lives</p>
+                    <div>
+                        <a href="{% url 'project:create_project' %}" class="carousel-button btn btn-lg position-absolute bottom-0 start-0 mb-4 ms-5 d-none d-sm-inline">Create Project</a>
+                        <a href="{% url 'project:create_project' %}" class="carousel-button btn btn-sm position-absolute top-0 end-0 mt-2  d-sm-none">Create Project</a>
+                
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,7 +76,7 @@
 <!--top project container-->
 
 {% if projects %}
-<div class="container-fluid mt-5 my-5">
+<div id="top_project" class="container-fluid mt-5 my-5">
     <div class="row">
         <h1 class="topheader text-center col-12"><span><i class="fa-solid fa-star" style="color: #FFD43B;"></i>Top Rated Projects <i class="fa-solid fa-star" style="color: #FFD43B;"></i></span></h1>
     </div>
@@ -73,7 +90,8 @@
                     <br>
                     <span class="remaining-time">{{ project.remaining_time }}</span>
                 </div>
-                <img src="{{ project.pictures.url }}" class="card-img-top" alt="{{ project.title }}">
+                <img src="{{ project.pictures }}" class="card-img-top" alt="{{ project.title }}">
+       
                 <div class="card-body">
                     <h5 class="card-title">{{ project.title }}</h5>
                     <p class="card-text">{{ project.details }}</p>
@@ -109,17 +127,18 @@
 
     <div class="row position-relative">
         
-        <img src="{% static 'image/slider1.png' %}" class="d-block w-100" alt="..." style="height:83vh; padding:0; margin:0;">
+        <img src="{% static 'image/slider-3.jpg' %}" class="d-block w-100" alt="..." style="height:83vh; padding:0; margin:0;">
         <div class="shadow-overlay"></div>
 
         <div class="categories-container justify-content-center align-items-end">
             {% for category in categories %}
             <div class="category-circle col-md-2">
                
-                <img src="{% static 'image/about1.jpg' %}" class="d-block w-100" alt="..." style="height:50vh;">
+                <img src="{% static 'image/project-3.png' %}" class="d-block w-100" alt="..." style="height:50vh;">
                 
-                <div class="category-name text-light">{{ category.name }}</div>
-            </div>
+           <a href="{% url 'project:category_detail' category.id %}" class="category-name text-light">{{ category.name }}</a>
+
+                </div>
             {% endfor %}
         </div>
     </div>
@@ -128,11 +147,10 @@
 
 
 
-
 <!--nearby projects container-->
 
 {% if nearby_projects %}
-<div class="container-fluid mt-5 my-5">
+<div id="nearbyproject" class="container-fluid mt-5 my-5">
 
     <div class="row  my-5">
         <h1 class="topheader text-center col-12  my-5"><i class="fa-solid fa-house" style="color: #fb8423;"></i>Events Nearby</span></h1>
@@ -147,7 +165,7 @@
                     <br>
                     <span class="remaining-time">{{ nearby_project.remaining_time }}</span>
                 </div>
-                <img src="{{ nearby_project.pictures.url }}" class="card-img-top" alt="{{ nearby_project.title }}">
+                <img src="{{ nearby_project.pictures }}" class="card-img-top" alt="{{ nearby_project.title }}">
                 <div class="card-body">
                     <h5 class="card-title">{{ nearby_project.title }}</h5>
                     <p class="card-text">{{ nearby_project.details }}</p>
@@ -168,8 +186,52 @@
 </div>
 {% endif %}
 
+
+
+
+<!--  Featured projects -->
+{% if newest_featured_projects %}
+<div class="container-fluid mt-5 my-5">
+    <div class="row">
+        <h1 class="topheader text-center col-12 my-5"><span><i class="fa-solid fa-star" style="color: #FFD43B;"></i>Newest Featured Projects <i class="fa-solid fa-star" style="color: #FFD43B;"></i></span></h1>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-5 g-4 my-5">
+        {% for newest_featured_project in newest_featured_projects %}
+        <div class="col">
+            <div class="card ratecard card-{{ forloop.counter }}">
+                <div class="project-header">
+                    <i class="fa-regular fa-clock"></i>
+                    <br>
+                    <span class="remaining-time">{{ newest_featured_project.project.remaining_time }}</span>
+                </div>
+                <img src="{{ newest_featured_project.project.pictures }}" class="card-img-top" alt="{{ newest_featured_project.project.title }}">
+       
+                <div class="card-body">
+                    <h5 class="card-title">{{ newest_featured_project.project.title }}</h5>
+                    <p class="card-text">{{ newest_featured_project.project.details }}</p>
+                    <p class="card-text">Raised: ${{ newest_featured_project.project.total_donations }} /${{ newest_featured_project.project.total_target }}</p>
+                    
+                    <div class="loader-container">
+                        <div class="loader loader-progress" data-progress="{{ newest_featured_project.project.progress_percentage }}">0%</div>               
+                    </div>
+
+                    <br>
+
+                    <a href="#" class="btn btn-warning donatebtn text-light">Donate Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+
+
 {% endblock %}
 
+
 {% block additional_js %}
-<script src="../static/js/homeStyle.js"></script>
+<script src="{% static 'js/homeStyle.js' %}"></script>
 {% endblock %}
