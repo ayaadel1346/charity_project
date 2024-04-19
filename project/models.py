@@ -87,7 +87,6 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     text = models.TextField()
-    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 #################################   Reply   #################################################
@@ -126,7 +125,7 @@ class Report(models.Model):
 class ProjectPicture(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='project_pictures/%Y/%m/%d')
-
+ 
 
 ########################### featured projects#####################################
 

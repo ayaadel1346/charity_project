@@ -20,34 +20,37 @@
                         <a class=" admin_link nav-link bg-hover" href="{% url 'admin_panel:user_profile' %}">User Profiles</a>
                     </li>
                     <li class="nav-item admin-item">
-                        <a class=" admin_link nav-link  bg-hover" href="#tags">Tags</a>
+                        <a class=" admin_link nav-link  bg-hover" href="{% url 'admin_panel:show_added_tags' %}">Tags</a>
                     </li>
                     <li class="nav-item admin-item">
                         <a class="admin_link nav-link  bg-hover" href="{% url 'admin_panel:category_list' %}">Categories</a>
                     </li>
                     <li class="nav-item admin-item">
-                        <a class="admin_link nav-link  bg-hover" href="#projects">Projects</a>
+                        <a class="admin_link nav-link  bg-hover" href="{% url 'admin_panel:project' %}">Projects</a>
                     </li>
                     <li class="nav-item admin-item">
-                        <a class="admin_link nav-link bg-hover" href="#donations">Donations</a>
+                        <a class="admin_link nav-link bg-hover" href="{% url 'admin_panel:donations' %}">Donations</a>
                     </li>
                     <li class="nav-item admin-item">
-                        <a class="admin_link nav-link bg-hover" href="#comments">Comments</a>
+                        <a class="admin_link nav-link bg-hover" href="{% url 'admin_panel:comment' %}">Comments</a>
                     </li>
                     <li class="nav-item admin-item">
-                        <a class="admin_link nav-link bg-hover" href="#replies">Replies</a>
+                        <a class="admin_link nav-link bg-hover" href="{% url 'admin_panel:replies' %}">Replies</a>
                     </li>
                     <li class="nav-item admin-item">
-                        <a class="admin_link nav-link bg-hover" href="#project_cancellations">Project Cancellations</a>
+                        <a class="admin_link nav-link bg-hover" href="{% url 'admin_panel:cancellation_list' %}">Project Cancellations</a>
                     </li>
                     <li class="nav-item admin-item">
-                        <a class="admin_link nav-link bg-hover" href="#ratings">Ratings</a>
+                        <a class="admin_link nav-link bg-hover" href="{% url 'admin_panel:show_rate' %}">Ratings</a>
                     </li>
                     <li class="nav-item admin-item">
-                        <a class="admin_link nav-link bg-hover" href="#reports">Reports</a>
+                        <a class="admin_link nav-link bg-hover" href="{% url 'admin_panel:show_reports' %}">Reports</a>
                     </li>
                     <li class="nav-item admin-item">
                         <a class="admin_link nav-link bg-hover" href="{% url 'admin_panel:featured_projects' %}">Featured projects</a>
+                    </li>
+                    <li class="nav-item admin-item">
+                        <a class="admin_link nav-link bg-hover" href="{% url 'admin_panel:project_picture_list' %}">Project Pictures </a>
                     </li>
                 </ul>
             </div>
