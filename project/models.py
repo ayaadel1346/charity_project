@@ -12,10 +12,18 @@ class UserProfile(models.Model):
     facebook_profile = models.URLField(null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
 
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()
+
 #######################   Category  ################################
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()
 
 ##########################   Project #######################################################
 class Project(models.Model):
@@ -67,11 +75,22 @@ class Project(models.Model):
         else:
             return 0 
         
+
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()    
+        
+#########################  Tag  ################################
+
 #########################  Tag  ################################
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
     projects = models.ManyToManyField(Project, related_name='tags')
+
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()
 
 ############################  Donation  ####################################################
 
@@ -81,6 +100,10 @@ class Donation(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     donated_at = models.DateTimeField(auto_now_add=True)
 
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count() 
+
 #################################   Comment  ################################################
 
 class Comment(models.Model):
@@ -88,6 +111,11 @@ class Comment(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()
 
 #################################   Reply   #################################################
 
@@ -97,6 +125,11 @@ class Reply(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()    
+
 ###########################    ProjectCancellation    ################################
 
 class ProjectCancellation(models.Model):
@@ -104,12 +137,20 @@ class ProjectCancellation(models.Model):
     cancellation_reason = models.TextField()
     cancelled_at = models.DateTimeField(auto_now_add=True)
 
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()
+
 ##########################   Rating   #########################################    
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     rating = models.IntegerField()
+
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()
 
 ##############################  Report   ####################################    
 
@@ -120,16 +161,22 @@ class Report(models.Model):
     reason = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()
+ 
+
 ########################## Project Picture ####################################
 
 class ProjectPicture(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='project_pictures/%Y/%m/%d')
  
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()
 
 ########################### featured projects#####################################
-
-
 
 class FeaturedProject(models.Model):
     project = models.OneToOneField(Project, on_delete=models.CASCADE, related_name='featured_project')
@@ -139,3 +186,7 @@ class FeaturedProject(models.Model):
     @staticmethod
     def newest_featured_projects():
         return FeaturedProject.objects.filter(is_featured=True).order_by('-created_at')[:5]
+
+    @classmethod
+    def count_objects(cls):
+        return cls.objects.count()

@@ -830,3 +830,11 @@ background-color: #222;
 .createBackground {
     background-color: #f57a322f; 
 }
+
+
+.register input[type="text"],
+.register input[type="email"],
+.register input[type="password"] {
+    padding: 10px; 
+    margin: 5px 0; 
+}

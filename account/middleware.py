@@ -8,8 +8,11 @@ class AuthenticationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if 'username' in request.session:
-            request.user = User.objects.get(username=request.session['username'])
+        if 'user_id' in request.session:
+            try:
+                request.user = User.objects.get(pk=request.session['user_id'])
+            except User.DoesNotExist:
+                request.user = None
 
         if not request.user.is_authenticated and request.path not in [reverse('account:login'), reverse('account:register')]:
             return HttpResponseRedirect(reverse('account:login'))

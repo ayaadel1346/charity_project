@@ -192,11 +192,11 @@
 <!--  Featured projects -->
 {% if newest_featured_projects %}
 <div class="container-fluid mt-5 my-5">
-    <div class="row">
+    <div class="row my-5">
         <h1 class="topheader text-center col-12 my-5"><span><i class="fa-solid fa-star" style="color: #FFD43B;"></i>Newest Featured Projects <i class="fa-solid fa-star" style="color: #FFD43B;"></i></span></h1>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-5 g-4 my-5">
+    <div class="row row-cols-1 row-cols-md-5 g-4">
         {% for newest_featured_project in newest_featured_projects %}
         <div class="col">
             <div class="card ratecard card-{{ forloop.counter }}">

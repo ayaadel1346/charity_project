@@ -1,15 +1,16 @@
 from project.models import UserProfile
 
 def user_info(request):
-  
+    user_id = None
     username = None
     user_profile = None
 
-    if 'username' in request.session:
-        username = request.session['username']
+    if 'user_id' in request.session:
+        user_id = request.session['user_id']
 
         try:
-            user_profile = UserProfile.objects.get(user__username=username)
+            user_profile = UserProfile.objects.get(user_id=user_id)
+            username = user_profile.user.username
         except UserProfile.DoesNotExist:
             pass
     

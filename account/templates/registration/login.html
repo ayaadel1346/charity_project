@@ -17,28 +17,37 @@
 </head>
 <body id="loginBody">
 
-<div class="login-container container">
-    <div class="book-container row">
-        <div class="book-image col-6">
-            <img src="{% static 'image/about2.jpg' %}" class="d-block w-100" alt="image" id="backgroundImage" data-images="{% static 'image/about2.jpg' %},{% static 'image/img-3.jpg' %},{% static 'image/about1.jpg' %}" style="height:80vh;">
-        </div>
-        <div class="book-form col-6">
-            <h1 class="my-5">Login</h1>
-            <form method="post" class="login-form my-5">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="my-5" type="submit">Login</button>
-            </form>
-            <br>
-            <p class="my-3">Forgot your password? <a href="{% url 'password_reset' %}">Reset it here</a></p>
-            <br>
-            <div class="text-center">
-                <a href="{% url 'account:register' %}" class="signup-link">Sign Up</a>
+    <div class="login-container container">
+        <div class="book-container row">
+            <div class="book-image col-6">
+                <img src="{% static 'image/about2.jpg' %}" class="d-block w-100" alt="image" id="backgroundImage" data-images="{% static 'image/about2.jpg' %},{% static 'image/img-3.jpg' %},{% static 'image/about1.jpg' %}" style="height:80vh;">
+            </div>
+            <div class="book-form col-6">
+                <h1 class="my-5">Login</h1>
+                <form method="post" class="login-form my-5">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <button class="my-5 btn btn-primary" type="submit">Login</button>
+                </form>
+                <br>
+                <p class="my-3">Forgot your password? <a href="{% url 'password_reset' %}">Reset it here</a></p>
+                <br>
+                <div class="text-center">
+                    <a href="{% url 'account:register' %}" class="signup-link">Sign Up</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 <script src="{% static 'js/loginScript.js' %}"></script>
 
 </body>

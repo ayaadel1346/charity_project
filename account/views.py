@@ -1,8 +1,7 @@
-from pyexpat.errors import messages
-from django.contrib.sessions.models import Session
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
 from django.shortcuts import get_object_or_404, render, redirect
+from admin_panel.forms import UserForm
 from .forms import *
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.tokens import default_token_generator
@@ -17,10 +16,9 @@ from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from datetime import datetime, timedelta
 from django.utils import timezone
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.shortcuts import render, redirect
+from django.utils.http import urlsafe_base64_decode
 from django.http import HttpResponse
+
 
 
 def login_view(request):
@@ -36,7 +34,7 @@ def login_view(request):
                 return render(request, 'registration/login.html', {'form': form, 'error_message': 'Invalid email or password.'})
         
             if check_password(password, user.password):
-                request.session['username'] = user.username
+                request.session['user_id'] = user.pk
                 if user.is_superuser:
                     return redirect('admin_panel:admin_panel')  
                 else:
@@ -49,7 +47,6 @@ def login_view(request):
 
 
 
-
 def logout_view(request):
     if request.method == 'POST':
         auth_logout(request)
@@ -58,7 +55,6 @@ def logout_view(request):
     else:
         return HttpResponseRedirect(reverse('account:login'))
     
-
 
 
 
@@ -80,7 +76,6 @@ def register(request):
                 uid = urlsafe_base64_encode(user.pk.to_bytes(4, 'big'))
                 token = default_token_generator.make_token(user)
 
-                
                 expiration_time = timezone.now() + timedelta(hours=24)
 
                 protocol = 'http'
@@ -103,7 +98,7 @@ def register(request):
                     settings.EMAIL_HOST_USER,
                     [user.email],
                     fail_silently=False,
-                    html_message=render_to_string('registration/activation_email.html', context)
+                    html_message=render_to_string('registration/activation_register.html', context)
                 )
 
                 return render(request, 'registration/activation_email_sent.html')
@@ -111,7 +106,6 @@ def register(request):
         user_form = UserRegistrationForm()
         profile_form = UserProfileRegistrationForm()
 
-   
     if expires:
         expiration_time = datetime.fromtimestamp(float(expires))
         if expiration_time < timezone.now():
@@ -121,21 +115,13 @@ def register(request):
 
 
 
-
-
-
 def user_profile(request):
-    username = request.session.get('username')
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return HttpResponse("User not logged in.")
 
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        return HttpResponse("User does not exist for the provided username")
-
-    try:
-        user_profile = UserProfile.objects.get(user=user)
-    except UserProfile.DoesNotExist:
-        return HttpResponse("User profile does not exist for the provided username")
+    user = get_object_or_404(User, pk=user_id)
+    user_profile = get_object_or_404(UserProfile, user=user)
 
     projects = Project.objects.filter(creator=user)
     donations = Donation.objects.filter(user=user)
@@ -146,7 +132,6 @@ def user_profile(request):
         'donations': donations,
     }
     return render(request, 'profile/Profile.html', context)
-
 
 
 
@@ -162,14 +147,12 @@ def delete_account(request):
             user_profile.delete()
             user.delete()
             auth_logout(request)
-            messages.success(request, 'Your account has been deleted successfully.')
-            return redirect('project:home')  
+            request.session.pop('user_id', None)  
+            return redirect('account:register') 
         else:
             error_message = 'Invalid password. Please try again.'
   
     return render(request, 'profile/delete_account.html', {'error_message': error_message})
-
-
 
 
 
@@ -182,8 +165,9 @@ def update_user(request, user_id):
         profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
         
         if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
+            updated_user = user_form.save()
             profile_form.save()
+
             return redirect('account:profile')  
     else:
         user_form = UserForm(instance=user)

@@ -7,7 +7,22 @@ from .forms import *
 from .models import *
 
 def admin_panel(request):
-    return render(request, 'base_admin.html')
+    tables = [
+        ('User Profile', UserProfile.count_objects()),
+        ('Category', Category.count_objects()),
+        ('Project', Project.count_objects()),
+        ('Tag', Tag.count_objects()),
+        ('Donation', Donation.count_objects()),
+        ('Comment', Comment.count_objects()),
+        ('Reply', Reply.count_objects()),
+        ('Project Cancellation', ProjectCancellation.count_objects()),
+        ('Rating', Rating.count_objects()),
+        ('Report', Report.count_objects()),
+        ('Project Picture', ProjectPicture.count_objects()),
+        ('Featured Project', FeaturedProject.count_objects()),
+    ]
+    return render(request, 'home/home_admin.html', {'tables': tables})
+
 
 def user_profile_view(request):
     user_profiles = UserProfile.objects.all()

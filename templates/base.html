@@ -38,10 +38,11 @@
 
         <div class="col-md-3 offset-1">
             <!-- Search bar -->
-            <form class="form-inline search-form search_main ">
-                <input class="form-control search-input" type="search" placeholder="Search . . . ." aria-label="Search">
+            <form class="form-inline search-form" method="GET" action="{% url 'project:search_projects' %}">
+                <input class="form-control search-input" type="text" name="query" placeholder="search. . . ." aria-label="Search">
                 <button class="btn text-light search-btn" type="submit">Search</button>
             </form>
+            
         </div>
 
         <div class="collapse navbar-collapse justify-content-end"> 
@@ -67,9 +68,9 @@
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
     <br>
-    <form class="search-form">
-        <input class="form-control search-input sideinput" type="search" placeholder="Search . . . . ." aria-label="Search">
-        <button class="btn text-light search-btn sidebtn" type="submit">Search</button>
+    <form class="form-inline search-form" method="GET" action="{% url 'project:search_projects' %}">
+        <input class="form-control search-input" type="text" name="query" placeholder="search. . . ." aria-label="Search">
+        <button class="btn text-light search-btn" type="submit">Search</button>
     </form>
     <hr>
     <ul>
