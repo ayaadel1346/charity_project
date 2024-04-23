@@ -3,7 +3,7 @@ from django.contrib.auth import login as auth_login, logout as auth_logout, auth
 from django.shortcuts import get_object_or_404, render, redirect
 from admin_panel.forms import UserForm
 from .forms import *
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
@@ -174,3 +174,6 @@ def update_user(request, user_id):
         profile_form = UserProfileForm(instance=profile)
         
     return render(request, 'profile/userUpdate.html', {'user_form': user_form, 'profile_form': profile_form})
+
+
+

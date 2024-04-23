@@ -28,11 +28,20 @@
                 <div class="project-header">
                     <i class="fa-regular fa-clock"></i>
                     <br>
-                    <span class="remaining-time">{{ project.remaining_time }}</span>
+                    <span class="remaining-time text-light">{{ project.remaining_time }}</span>
                 </div>
                 <img src="{{ project.pictures }}" class="card-img-top" alt="{{ project.title }}">
                 <div class="card-body">
-                    <h5 class="card-title">{{ project.title }}</h5>
+                    <h5 class="card-title text-center">{{ project.title }}</h5>
+                    <p class="text-center">
+                        {% for _ in "xxxxx" %}
+                            <span><i class="fa-solid fa-star" style="color: #FFD43B;"></i></span>
+                        {% endfor %}
+                    </p>
+                    
+                    <div class="loader-container">
+                        <div class="loader loader-progress " data-progress="{{ project.average_rating }}">0%</div>               
+                    </div>
                     <p class="card-text">{{ project.details }}</p>
                     <p class="card-text">Raised: ${{ project.total_donations }} /${{ project.total_target }}</p>
                     
@@ -41,9 +50,8 @@
                     </div>
 
                     <br>
-
-                    <a href="#" class="btn btn-warning donatebtn text-light">Donate Now</a>
-                </div>
+                    <a href="{% url 'project:view_project' project.id %}" class="btn btn-warning donatebtn text-light">Donate Now</a>
+                 </div>
             </div>
         </div>
         {% endfor %}

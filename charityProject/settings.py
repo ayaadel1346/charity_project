@@ -30,6 +30,7 @@ SECRET_KEY = 'django-insecure-lf2(uuyy0w_+!wq$y6b-#b-l4twq_uv%9my3_ue7=$jl%+p@qa
 DEBUG = True
 
 ALLOWED_HOSTS = []
+PAYPAL_TEST = True
 
 
 # Application definition
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'account', 
     'project',  
     'admin_panel', 
+    'userPayment',
+    'paypal.standard.ipn',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -162,5 +165,5 @@ if DEBUG:
     # Disable caching for development
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-
+PAYPAL_RECEIVER_EMAIL = 'charity122@gmail.com'
 

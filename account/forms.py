@@ -11,7 +11,7 @@ class MixedAlphaNumericValidator:
         self.message = message or 'Field must contain both letters and numbers.'
 
     def __call__(self, value):
-        if not re.match(r'[a-zA-Z]', value) or not re.match(r'[0-9]', value):
+        if not re.search(r'[a-zA-Z]', value) or not re.search(r'[0-9]', value):
             raise ValidationError(self.message)
 
 mixed_alphanumeric_validator = MixedAlphaNumericValidator()
@@ -59,6 +59,11 @@ egyptian_phone_validator = RegexValidator(
     message='Please enter a valid Egyptian mobile phone number.'
 )
 
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [ 'username','first_name', 'last_name']
+        
 class UserProfileForm(forms.ModelForm):
     mobile_phone = forms.CharField(max_length=11, validators=[egyptian_phone_validator])
     country = forms.CharField()

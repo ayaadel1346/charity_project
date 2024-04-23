@@ -15,6 +15,9 @@ class UserProfile(models.Model):
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
+    
+    def __str__(self):
+        return self.user.username
 
 #######################   Category  ################################
 
@@ -24,6 +27,9 @@ class Category(models.Model):
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
+    
+    def __str__(self):
+        return self.name
 
 ##########################   Project #######################################################
 class Project(models.Model):
@@ -79,8 +85,11 @@ class Project(models.Model):
     @classmethod
     def count_objects(cls):
         return cls.objects.count()    
+    
+    def __str__(self):
+        return self.title
         
-#########################  Tag  ################################
+
 
 #########################  Tag  ################################
 
@@ -91,6 +100,9 @@ class Tag(models.Model):
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
+    
+    def __str__(self):
+        return self.name
 
 ############################  Donation  ####################################################
 
@@ -103,6 +115,7 @@ class Donation(models.Model):
     @classmethod
     def count_objects(cls):
         return cls.objects.count() 
+    
 
 #################################   Comment  ################################################
 
@@ -112,10 +125,17 @@ class Comment(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def _str_(self):
+        return self.text
 
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
+    
+    def __str__(self):
+        return self.text
+    
+    
 
 #################################   Reply   #################################################
 
@@ -128,7 +148,10 @@ class Reply(models.Model):
 
     @classmethod
     def count_objects(cls):
-        return cls.objects.count()    
+        return cls.objects.count()  
+
+    def __str__(self):
+        return self.text
 
 ###########################    ProjectCancellation    ################################
 
@@ -140,6 +163,10 @@ class ProjectCancellation(models.Model):
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
+    
+    def __str__(self):
+        return f"Cancellation of project: {self.project.title}"
+
 
 ##########################   Rating   #########################################    
 
@@ -148,10 +175,26 @@ class Rating(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     rating = models.IntegerField()
 
+    def _str_(self):
+        return f"{self.user.username} - {self.project.title}: {self.rating}"
+    
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
-
+    
+    @classmethod
+    def average_rating(cls, project):
+        all_ratings = cls.objects.filter(project=project)
+        total_rating = sum(rating.rating for rating in all_ratings)
+        
+        if all_ratings.exists():
+            average_rating = (total_rating / all_ratings.count()) * 20  
+        else:
+            average_rating = 0
+        
+        return average_rating
+    
+    
 ##############################  Report   ####################################    
 
 class Report(models.Model):
@@ -160,11 +203,20 @@ class Report(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True)
     reason = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    REPORT_CHOICES = (
+        ('spam', 'Spam or scam'),
+        ('inappropriate', 'Inappropriate content'),
+        ('other', 'Other'),
+    )
 
+    def _str_(self):
+        return f"Report by {self.user.username} on {self.created_at}"
+    
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
- 
+    
+    
 
 ########################## Project Picture ####################################
 
@@ -175,6 +227,9 @@ class ProjectPicture(models.Model):
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
+    
+    def __str__(self):
+        return f"Picture of project: {self.project.title}"
 
 ########################### featured projects#####################################
 
@@ -190,3 +245,19 @@ class FeaturedProject(models.Model):
     @classmethod
     def count_objects(cls):
         return cls.objects.count()
+    
+    def __str__(self):
+        return f"Featured project: {self.project.title}"
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,9 +2,9 @@
 {% load static %}
 
 {% block content %}
-<div class="container comments">
+<div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title text-center mb-0">Add Comment</h2>
@@ -13,20 +13,7 @@
                     <form action="" method="post" class="w-75 m-auto">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-success">Add Comment</button>
-<!--                        <div class="mb-3">-->
-<!--                            <label for="name" class="form-label">Name</label>-->
-<!--                            <input type="text" class="form-control" id="name" required>-->
-<!--                        </div>-->
-<!--                        <div class="mb-3">-->
-<!--                            <label for="email" class="form-label">Email</label>-->
-<!--                            <input type="email" class="form-control" id="email" required>-->
-<!--                        </div>-->
-<!--                        <div class="mb-3">-->
-<!--                            <label for="comment" class="form-label">Comment</label>-->
-<!--                            <textarea class="form-control" id="comment" rows="4" required></textarea>-->
-<!--                        </div>-->
-<!--                        <button type="submit" class="btn btn-success">Add Comment</button>-->
+                        <button type="submit" class="btn btn-success">Add Comment</button>     
                     </form>
                 </div>
             </div>
