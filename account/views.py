@@ -80,7 +80,8 @@ def register(request):
 
                 protocol = 'http'
                 domain = request.META['HTTP_HOST']
-                activation_link = f"{protocol}://{domain}/account/?uidb64={uid}&token={token}&expires={expiration_time.timestamp()}"
+                activation_link = f"{protocol}://{domain}/?uidb64={uid}&token={token}&expires={expiration_time.timestamp()}"
+
 
                 context = {
                     'email': user.email,
