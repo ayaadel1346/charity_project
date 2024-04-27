@@ -29,8 +29,10 @@ def home(request):
     categories = Category.objects.all() 
     
     if nearby_projects is not None:
-        nearby_projects = [project for project in nearby_projects if not project.is_cancelled and project.progress_percentage != 100 and project.end_time > timezone.now()][:5]
-    
+     nearby_projects = [project for project in nearby_projects if not project.is_cancelled and project.progress_percentage != 100 and project.end_time > timezone.now()][:5]
+    else:
+     nearby_projects = []
+        
     if top_projects is not None:
         top_projects = [project for project in top_projects if not project.is_cancelled and project.progress_percentage != 100 and project.end_time > timezone.now()][:5]
     
